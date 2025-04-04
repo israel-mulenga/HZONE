@@ -1,0 +1,60 @@
+/*Index*/
+.background-image {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+}
+
+#diapo {
+  padding: 0;
+}
+
+.text-right {
+  display: flex;
+  justify-content: end;
+}
+
+#login {
+  margin-right: 5px;
+}
+
+/*Connexion et Inscrption*/
+.connexionContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+}
+form {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 5px 3px 10px #333;
+  padding: 20px;
+  border-radius: 5px;
+  max-width: 500px;
+  background-color: white;
+}
+
+.container-publier {
+  background-color: red;
+  display: flex;
+  justify-content: center;
+}
+
+.container-icon {
+  background-color: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.buttonAccueil {
+  height: 50px;
+  width: 5Opx;
+  display: flex;
+  align-items: center;
+}

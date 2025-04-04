@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accueil</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/> <!--animated.CSS-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!--font awesome-->
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="icon" href="css/images/HZONE.png">
+</head>
+<body>
+  <div class="container-fluid">
+    <!-- Nav tabs -->
+   <div class="row d-flex flex-row">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="m-2"><span class="h1 fs-3 w-100 fw-bold w-100"><span class="text-primary">H</span>ZONE</span></li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="annonces-tab" data-bs-toggle="tab" href="#annonces" role="tab" aria-controls="annonces" aria-selected="true">Annonces</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="publier-tab" data-bs-toggle="tab" href="#publier" role="tab" aria-controls="publier" aria-selected="false">Publier</a>
+      </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="favoris-tab" data-bs-toggle="tab" href="#favoris" role="tab" aria-controls="favoris" aria-selected="false">Favoris</a>
+      </li>
+    </ul>
+   </div>
+
+    <!-- Tab panes -->
+    <div class="tab-content" id="myTabContent">
+      <!--Les annonces en ligne-->
+      <div class="tab-pane fade show active container p-0" id="annonces" role="tabpanel" aria-labelledby="annonces-tab">
+         <!--la barre de recherche et filtre-->
+        <div class="container-fluid mt-3 ">
+          <div class="row md-3">
+            <div class="col-sm-6">
+              <input class="form-control mb-3" type="text" id="searchInput" placeholder="Rechercher...">
+            </div>
+            <div class="col-sm-3">
+              <select class="form-select mb-3" id="filterSelect">
+                <option value="">Tous les filtres</option>
+                <option value="option1">Filtre 1</option>
+                <option value="option2">Filtre 2</option>
+                <option value="option3">Filtre 3</option>
+              </select>
+            </div>
+            <div class="col-sm-3">
+              <button class="btn btn-primary w-100" id="searchButton">Rechercher</button>
+            </div>
+          </div>
+      
+          <div id="resultContainer">
+            <!-- Résultats de la recherche seront affichés ici -->
+          </div>
+        </div>
+
+        <!--Affichage des annonces-->
+        <div class="container mt-5  p-0">
+          <!--Modèle annonces des ventes-->
+          <div class="container-fluid container-annonces w-100 p-0 d-flex align-items-center flex-column">
+            <div class="row bg-light container p-0 shadow-lg mb-3 pt-4 pb-4 rounded">
+              <!--l'image-->
+              <div class="col-md-6 mb-3">
+                <a href="annonces.html">
+                  <img src="css/images/maison vacance.jpg" alt="" class="image-responsive w-100 h-100">
+                </a>
+              </div>
+              <!--la description-->
+              <div class="col-md-6 p-4 d-flex align-items-center justify-content-center flex-column">
+                <div class="row">
+                    <h3 id="intitulé" class="text-decoration-underline text-uppercase">Maison à vendre</h3>
+                    <p id="description">
+                    Bienvenue dans cette charmante maison de trois chambres située au cœur d'un quartier paisible et convivial.
+                    Cette maison, parfaitement entretenue, offre un cadre de vie confortable et pratique, idéal pour une famille ou un couple cherchant à s'installer dans un environnement agréable.
+                   </p>
+                   <p id="addresse" class="fw-bold">123 Rue des Fleurs, 75012 Paris, France</p>
+                </div>
+                <div class="row">
+                  <h2 id="prix" class="text-danger fw-bold fa-2x text-center">120.000$</h2>
+                </div>
+                <div class="row pt-2 justify-content-center">
+                  <div class="col-auto buttonAccueil">
+                    <button id="likeButton" class="border-0 bg-light not-liked text-center">
+                      <i class="far fa-heart text-black fa-2x" id="likeButtonIcon"></i>
+                    </button>
+                  </div>
+                
+                  <div class="col-auto buttonAccueil">
+                    <a href="#" id="whatsapp-share" class="btn btn-success"> 
+                      <i class="fab fa-whatsapp fa-1x"></i>
+                    </a>
+                  </div>
+                
+                  <div class="col-auto buttonAccueil">
+                    <button class="btn btn-dark" id="copyButton">
+                      <i class="fas fa-clipboard fa-1x"></i>
+                    </button>
+                  </div>
+                  
+                  <div class="col-auto">
+                    <p id="messageCopyButton" class="text-center"></p>
+                  </div>
+                </div>       
+                <div class="row text-start w-100 mt-2">
+                  <di>
+                    <a href="annonces.html" class="">En savoir plus...</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+
+      <!--Mettre en ligne une annonces-->
+      <div class="tab-pane fade container p-3" id="publier" role="tabpanel" aria-labelledby="publier-tab">
+        <div class="row">
+          <label for="options" class="fw-bold">Vendre ou Louer</label>
+          <select name="options" id="options" class="form-select">
+            <option value="" selected>Voulez-vous vendre ou mettre en location</option>
+            <option value="louer">Louer</option>
+            <option value="vendre">Vendre</option>
+          </select>
+        </div>
+
+        <!--Description des caractéristiques de bien à mettre en ligne-->
+        <div class="row mt-2" style="display:none" id="divOptionLocation">
+          <label for="optionLocation" class="fw-bold">Quel type de bien voulez-vous mettre en location</label>
+          <select name="optionLocation" id="optionLocation" class="form-select">
+            <option value="" selected>Choisissez...</option>
+            <option value="chambre">Chambre</option>
+            <option value="maison">Maison</option>
+            <option value="appartement">Appartement</option>
+            <option value="autre">autre</option>
+          </select>
+        </div>
+        <div class="row" id="formPublication">
+          
+          
+          
+        </div>
+
+      </div>
+
+      <!--Voir mes favoris-->
+      <div class="tab-pane fade container" id="favoris" role="tabpanel" aria-labelledby="favoris-tab">
+        <p>Contenu de l'onglet Favoris.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script> <!--le script bootstrap-->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> <!--Jquery-->
+
+  <script src="javaScript/scripts.js"></script>
+</body>
+</html>

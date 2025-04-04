@@ -1,0 +1,68 @@
+{% extends 'hzone_app/landing_base.html' %} {% block content %}
+<div
+  class="d-flex justify-content-center align-items-center container-fluid rounded connexionContainer"
+>
+  <form
+    action=""
+    method="POST"
+    class="form-group border rounded w-100 p-4 bg-light"
+    style="margin-top: 100px; margin-bottom: 20px"
+  >
+    {% csrf_token %}
+    <input
+      type="text"
+      id="inputFirstname"
+      placeholder="Votre Prénom"
+      class="rounded form-control mb-3"
+      required
+    />
+    <input
+      type="text"
+      id="inputName"
+      placeholder="Votre Nom"
+      class="rounded form-control mb-3"
+      required
+    />
+    <input
+      type="file"
+      id="photoProfil"
+      placeholder="Votre photo"
+      class="rounded form-control mb-3"
+    />
+    <input
+      type="tel"
+      id="inputPhone"
+      placeholder="Votre numéro de téléphone"
+      class="form-control mb-3"
+      required
+    />
+    <input
+      type="email"
+      id="inputEmail"
+      placeholder="Votre email"
+      class="rounded form-control mb-3"
+      required
+    />
+    <input
+      type="password"
+      id="password1"
+      placeholder="Votre mot de passe"
+      class="rounded form-control mb-3"
+      required
+    />
+    <input
+      type="password"
+      id="password2"
+      placeholder="Répéter votre mot de passe"
+      class="rounded form-control mb-3"
+      required
+    />
+    <button type="submit" class="btn btn-primary mb-3 mt-3 w-100">
+      S'inscrire
+    </button>
+    <a href="{% url 'connexion' %}" class="d-block text-center"
+      >J'ai déjà un compte</a
+    >
+  </form>
+</div>
+{% endblock %}

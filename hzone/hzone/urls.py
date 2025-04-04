@@ -21,4 +21,7 @@ from hzone_app import views
 urlpatterns = [
     path("", views.landing, name="landing"),
     path('admin/', admin.site.urls),
+    path("connexion/", views.connexion, name="connexion"),
+    path("inscription/", views.inscription, name="inscription"),
+    path("password-forgot/", views.password_forgot, name="password-forgot"),
 ]
