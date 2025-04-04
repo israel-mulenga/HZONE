@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"> <!--bootstrap-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/> <!--animated.CSS-->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> <!--Jquery-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"> <!--cdn for icon-->
+    <link rel="stylesheet" href="css/styles.css"> <!--lien du css-->
+    <link rel="icon" href="css/images/HZONE.png">
+    <title>HZONE</title>
+</head>
+<body>
+
+    <div class="container">
+        <!--NAVBAR-->
+        <nav class="navbar navbar-light bg-light fixed-top  ">
+            <div class="row w-100">
+                <div class="col-9 ">
+                   <a class="text-decoration-none" href="accueil.html"><span class="h1 fs-3 w-100 fw-bold w-100"><span class="text-primary">H</span>ZONE</span></a>
+                </div>
+                <div class="container col-3 text-right">
+                    <button class="btn btn-primary" id="login"><a class="text-light text-decoration-none" href="connexion.html">Login</a></button>
+                    <button class="btn btn-warning"><a href="inscription.html" class="text-black text-decoration-none">Signup</a></button>
+                </div>
+                 
+            </div>  
+        </nav>
+    </div>
+
+    <!--Image d'Accueil-->
+    <div  id="diapo">
+        <!--ici s'affichera le diaporama d'accueil-->
+    </div>
+
+    <!--Section Achat-->
+    <div class="container mt-2 ">
+        <div class="row mb-5 mt-2">
+            <h2 class="text-center m-3 fw-bold">ACHAT</h2>
+            <div class="col-md-6 d-flex justify-content-center  flex-column">
+                <div class="row  animate__animated animate__fadeInLeft">
+                    <span class="text-uppercase fs-2 fw-bold"> Vous cherchez la maison parfaite ?</span>
+                    
+                    <p class="mt-3"> Notre service de vente immobilière est là pour vous offrir une expérience d'achat fluide et agréable. 
+                        Un catalogue exquis, explorez une large sélection de maisons élégantes et confortables, adaptées à tous les budgets.
+                        Transformez votre rêve en réalité. Contactez-nous dès aujourd'hui pour découvrir comment nous pouvons
+                        vous aider à trouver la maison idéale.
+                    </p>
+                    <a href="connexion.html">Acheter une maison</a>
+                </div>
+            </div>
+            <div class="col-md-6 mt-2"><img src="css/images/achat.jpg" class="image-responsive rounded w-100 h-100"></div>
+        </div>
+
+        <!--Section Vente-->
+        <div class="row mb-5">
+            <h2 class="text-center m-3 fw-bold">VENTE</h2>
+            <div class="col-md-6"><img src="css/images/vente.jpg" class="image-responsive rounded w-100 h-100"></div>
+            <div class="col-md-6 d-flex justify-content-center  flex-column">
+                <div class="row">
+                    <span class="text-uppercase fs-2 fw-bold">Besoin de vendre votre maison rapidement et au meilleur prix ?</span>
+                    <p class="mt-3">Nous mettons tout en œuvre pour que votre maison se démarque sur le marché
+                    Ne laissez pas votre maison attendre un acheteur ! Contactez-nous dès aujourd'hui et découvrez comment 
+                        nous pouvons transformer votre rêve en réalité.</p>
+                    <a href="connexion.html">Vendre ma maison</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-5">
+            <h2 class="text-center m-3 fw-bold">LOCATION</h2>
+            <div class="col-md-4">
+                <img src="css/images/hotel.jpg"  class="image-responsive w-100 rounded">
+                <h4 class="text-center mt-2 mb-5">Chambre</h4>
+            </div>
+            <div class="col-md-4">
+                <img src="css/images/apparte.jpg" class="image-responsive w-100 rounded">
+                <h4 class="text-center mt-2 mb-5">Appartemment</h4>
+            </div>
+            <div class="col-md-4" id="colLocation3">
+                <img src="css/images/maison vacance.jpg" class="image-responsive w-100  rounded">
+                <h4 class="text-center mt-2 mb-5">Maison</h4>
+            </div>
+            <div class="container">
+                <p class="text-uppercase fs-2 fw-bold">Que vous planifiez un séjour de courte, moyenne ou longue durée</p>
+                <p>nous avons exactement ce qu'il vous faut. 
+                    Explorez nos options variées pour trouver l'hébergement parfait qui répondra à tous vos besoins :</p>
+                
+                <ul>
+                    <li><span class="fw-bold">Hôtels</span> : Profitez du confort et des commodités de nos hôtels de qualité supérieure. Idéal pour des 
+                        séjours courts et des vacances mémorables.</li>
+                    <li><span class="fw-bold">Maisons</span> : Trouvez la maison de vos rêves pour des séjours plus longs avec tout l'espace et l'intimité 
+                        dont vous avez besoin. Parfait pour les familles ou les grands groupes.</li>
+                    <li><span class="fw-bold">Appartements</span> : Optez pour nos appartements modernes et entièrement équipés, adaptés pour des séjours 
+                        de toute durée, avec la flexibilité et le confort d'un chez-soi.</li>
+                </ul>
+            </div>
+            <a href="connexion.html">mettre mon bien en location ou trouver mon bien à louer</a>
+    </div>
+
+    <footer class="bg-light w-100 text-center p-2 container-fluid">
+        <span class="h1 fs-3 w-100 fw-bold w-100"><span class="text-primary">H</span>ZONE</span>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>  
+    <script> 
+        const diapo = document.getElementById("diapo");
+    
+        //les contenus de la diapositive
+        const containDiapo1 = `
+        <div class="background-image d-flex justify-content-center align-items-center container-fluid " style="background-image: url(css/images/bg2.jpg);" id="diapo">
+            <div id="text-bg" class="animate__animated animate__fadeInUp bg-light opacity-50 p-2">
+                <h1 class="text-center text-dark m-2">TROUVER L'HABITATION DE VOS REVES</h1>
+            </div>
+        </div>`;
+    
+        const containDiapo2 = `
+         <div class="background-image d-flex justify-content-center align-items-center container-fluid" style="background-image: url(css/images/maison.jpg);" id="diapo">
+            <div id="text-bg" class="animate__animated animate__fadeInUp bg-light opacity-50 ">
+                <h1 class="text-center m-2">METTER VOTRE BIEN EN LOCATION FACILEMENT</h1>
+            </div>
+        </div>`;
+    
+        const containDiapo3 = `
+         <div class="background-image d-flex justify-content-center align-items-center container-fluid" style="background-image: url(css/images/apparte.jpg);" id="diapo">
+            <div id="text-bg" class="animate__animated animate__fadeInUp bg-light opacity-50 p-2">
+                <h1 class="text-center text-dark m-2">VOTRE APPARTEMENT IDEAL A PORTER DE MAIN</h1>
+            </div>
+        </div>`;
+    
+        //la fonction pour changer le contenu de la diapositive
+        function changeContain(){
+            if(diapo.innerHTML===containDiapo1){
+                diapo.innerHTML = containDiapo2;
+            }else if(diapo.innerHTML===containDiapo2){
+                diapo.innerHTML = containDiapo3
+            }else if(diapo.innerHTML===containDiapo3){
+                diapo.innerHTML = containDiapo1
+            }else{
+                diapo.innerHTML = containDiapo1;
+            }
+        }
+    
+            $(document).ready(function() {
+                changeContain()
+            function animateDiapo(){
+                setTimeout(function(){
+                $("#diapo").addClass("animate__animated animate__fadeOutRight");
+            }, 3000);
+    
+            setTimeout(function(){
+                $("#diapo").removeClass("animate__fadeOutRight").addClass("animate__fadeInLeft");
+            }, 3700)
+    
+            setTimeout(function(){
+                changeContain()
+                $("#diapo").removeClass("animate__animated__fadeInLeft");
+            }, 3700)
+    
+            setTimeout(function(){
+                animateDiapo();
+            }, 3900)
+            }
+            
+            animateDiapo() //l'appel de la fonction
+        })
+    
+        </script>
+</body>
+</html>
