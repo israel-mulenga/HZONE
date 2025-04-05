@@ -1,0 +1,42 @@
+{% extends 'hzone_app/landing_base.html' %} {% block content %}
+<div
+  class="d-flex justify-content-center align-items-center container-fluid rounded connexionContainer"
+  style="background-image: url(css/images/bg2.jpg)"
+>
+  <form action="{% url 'connexion' %}" method="post" class="form-group border rounded bg-light w-100">
+    {% csrf_token %}
+    <input
+      type="text"
+      id="username"
+      placeholder="Votre username"
+      class="rounded form-control mb-3"
+      required
+      name="username"
+    />
+    <input
+      type="password"
+      id="password"
+      placeholder="Votre mot de passe"
+      class="rounded form-control"
+      required
+      name="password"
+    />
+    <button class="btn btn-primary mb-3 mt-3" type="submit">Se connecter</button>
+    <a
+      href="{% url 'password-forgot' %}"
+      class=" text-decoration-none"
+      >mot de passe oublié</a
+    >
+    {% if messages %}
+    <div>
+      {% for message in messages %}
+        <div class="alert {{ message.tags }} text-danger">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+  </div>
+  </form>
+ 
+{% endblock %}

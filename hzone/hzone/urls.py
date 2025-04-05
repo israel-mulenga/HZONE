@@ -16,13 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from hzone_app import views
+import hzone_app.views
+import authentification.views
 
 urlpatterns = [
-    path("", views.landing, name="landing"),
+    path("", authentification.views.landing, name="landing"),
     path('admin/', admin.site.urls),
-    path("connexion/", views.connexion, name="connexion"),
-    path("inscription/", views.inscription, name="inscription"),
-    path("password-forgot/", views.password_forgot, name="password-forgot"),
-    path("home/", views.home, name="home" )
+    path("connexion/", authentification.views.connexion, name="connexion"),
+    path("inscription/", authentification.views.inscription, name="inscription"),
+    path("password-forgot/", authentification.views.password_forgot, name="password-forgot"),
+    path("home/", hzone_app.views.home, name="home" )
 ]
