@@ -11,3 +11,6 @@ def inscription(request):
 
 def password_forgot(request):
     return render(request, "hzone_app/password_forgot.html")
+
+def home(request):
+    return render(request, 'hzone_app/home.html')

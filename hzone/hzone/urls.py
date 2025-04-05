@@ -24,4 +24,5 @@ urlpatterns = [
     path("connexion/", views.connexion, name="connexion"),
     path("inscription/", views.inscription, name="inscription"),
     path("password-forgot/", views.password_forgot, name="password-forgot"),
+    path("home/", views.home, name="home" )
 ]
