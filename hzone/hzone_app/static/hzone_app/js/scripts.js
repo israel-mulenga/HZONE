@@ -12,6 +12,17 @@
 
     
 
+    const dialog = document.getElementById('myDialog');
+    const openButton = document.getElementById('openDialog');
+    const closeButton = document.getElementById('closeDialog');
+
+    // Ouvrir le modal
+    openButton.addEventListener('click', () => dialog.showModal());
+
+    // Fermer le modal
+    closeButton.addEventListener('click', () => dialog.close());
+  
+
 
     //DEFINITION DES FONCTIONS
     const likeOrUnlike = ()=>{

@@ -23,7 +23,8 @@ urlpatterns = [
     path("", authentification.views.landing, name="landing"),
     path('admin/', admin.site.urls),
     path("connexion/", authentification.views.connexion, name="connexion"),
-    path("inscription/", authentification.views.inscription, name="inscription"),
+    path("inscription/", authentification.views.Inscription.as_view(), name="inscription"),
     path("password-forgot/", authentification.views.password_forgot, name="password-forgot"),
+    path("logout/", authentification.views.logout_user, name="logout"),
     path("home/", hzone_app.views.home, name="home" )
 ]

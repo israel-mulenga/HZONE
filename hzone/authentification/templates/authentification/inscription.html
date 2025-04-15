@@ -12,6 +12,7 @@
     <input
       type="text"
       id="inputFirstname"
+      name="firstname"
       placeholder="Votre Prénom"
       class="rounded form-control mb-3"
       required
@@ -19,19 +20,30 @@
     <input
       type="text"
       id="inputName"
+      name="lastname"
       placeholder="Votre Nom"
+      class="rounded form-control mb-3"
+      required
+    />
+    <input
+      type="text"
+      id="inputUsername"
+      name="username"
+      placeholder="Votre nom d'utilisateur"
       class="rounded form-control mb-3"
       required
     />
     <input
       type="file"
       id="photoProfil"
+      name="profilphoto"
       placeholder="Votre photo"
       class="rounded form-control mb-3"
     />
     <input
       type="tel"
       id="inputPhone"
+      nome="phonenumber"
       placeholder="Votre numéro de téléphone"
       class="form-control mb-3"
       required
@@ -39,6 +51,7 @@
     <input
       type="email"
       id="inputEmail"
+      name="password"
       placeholder="Votre email"
       class="rounded form-control mb-3"
       required
@@ -46,6 +59,7 @@
     <input
       type="password"
       id="password1"
+      name="password"
       placeholder="Votre mot de passe"
       class="rounded form-control mb-3"
       required
@@ -53,6 +67,7 @@
     <input
       type="password"
       id="password2"
+      name="repeatpassword"
       placeholder="Répéter votre mot de passe"
       class="rounded form-control mb-3"
       required
@@ -63,6 +78,15 @@
     <a href="{% url 'connexion' %}" class="d-block text-center"
       >J'ai déjà un compte</a
     >
+    {% if messages %}
+  <div>
+    {% for message in messages %}
+      <div class="alert {{ message.tags }} text-danger">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
   </form>
 </div>
 {% endblock %}
