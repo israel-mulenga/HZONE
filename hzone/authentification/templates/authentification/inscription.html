@@ -1,92 +1,61 @@
-{% extends 'hzone_app/landing_base.html' %} {% block content %}
-<div
-  class="d-flex justify-content-center align-items-center container-fluid rounded connexionContainer"
->
-  <form
-    action=""
-    method="POST"
-    class="form-group border rounded w-100 p-4 bg-light"
-    style="margin-top: 100px; margin-bottom: 20px"
-  >
-    {% csrf_token %}
-    <input
-      type="text"
-      id="inputFirstname"
-      name="firstname"
-      placeholder="Votre Prénom"
-      class="rounded form-control mb-3"
-      required
-    />
-    <input
-      type="text"
-      id="inputName"
-      name="lastname"
-      placeholder="Votre Nom"
-      class="rounded form-control mb-3"
-      required
-    />
-    <input
-      type="text"
-      id="inputUsername"
-      name="username"
-      placeholder="Votre nom d'utilisateur"
-      class="rounded form-control mb-3"
-      required
-    />
-    <input
-      type="file"
-      id="photoProfil"
-      name="profilphoto"
-      placeholder="Votre photo"
-      class="rounded form-control mb-3"
-    />
-    <input
-      type="tel"
-      id="inputPhone"
-      nome="phonenumber"
-      placeholder="Votre numéro de téléphone"
-      class="form-control mb-3"
-      required
-    />
-    <input
-      type="email"
-      id="inputEmail"
-      name="password"
-      placeholder="Votre email"
-      class="rounded form-control mb-3"
-      required
-    />
-    <input
-      type="password"
-      id="password1"
-      name="password"
-      placeholder="Votre mot de passe"
-      class="rounded form-control mb-3"
-      required
-    />
-    <input
-      type="password"
-      id="password2"
-      name="repeatpassword"
-      placeholder="Répéter votre mot de passe"
-      class="rounded form-control mb-3"
-      required
-    />
-    <button type="submit" class="btn btn-primary mb-3 mt-3 w-100">
-      S'inscrire
-    </button>
-    <a href="{% url 'connexion' %}" class="d-block text-center"
-      >J'ai déjà un compte</a
-    >
-    {% if messages %}
-  <div>
-    {% for message in messages %}
-      <div class="alert {{ message.tags }} text-danger">
-        {{ message }}
+{% extends 'hzone/landing_base.html' %} {% block content %}
+<main class="main-content auth-container">
+  <div class="auth-card">
+      <div class="auth-header">
+          <h2>Inscription</h2>
+          <p>Créez votre compte pour accéder à toutes nos fonctionnalités</p>
       </div>
-    {% endfor %}
+      <form class="auth-form" method="post">
+        {% csrf_token %}
+          <div class="form-row">
+              <div class="form-group">
+                  <label for="inputFirstname">Prénom</label>
+                  <input type="text" id="inputFirstname" name="firstname" class="form-input" placeholder="Votre prénom" required>
+              </div>
+              <div class="form-group">
+                  <label for="inputName">Nom</label>
+                  <input type="text" id="inputName" name="lastname" class="form-input" placeholder="Votre nom" required>
+              </div>
+          </div>
+          <div class="form-group">
+            <label for="inputUsername">Nom d'utilisateur</label>
+            <input type="text" id="inputUsername" name="username" class="form-input" placeholder="Votre nom d'utilisateur" required>
+        </div>
+          <div class="form-group">
+              <label for="photoProfil">Photo de profil</label>
+              <input type="file" id="photoProfil" name="profile_photo" class="form-input" accept="image/*">
+          </div>
+          <div class="form-group">
+              <label for="inputPhone">Téléphone</label>
+              <input type="tel" id="inputPhone" name="phone_number" class="form-input" placeholder="Votre numéro de téléphone" required>
+          </div>
+          <div class="form-group">
+              <label for="inputEmail">Adresse e-mail</label>
+              <input type="email" id="inputEmail" name="email"  class="form-input" placeholder="Votre email" required>
+          </div>
+          <div class="form-group">
+              <label for="password">Mot de passe</label>
+              <input type="password" id="password" name="password" class="form-input" placeholder="Votre mot de passe" required>
+          </div>
+          <div class="form-group">
+              <label for="confirmPassword">Confirmation du mot de passe</label>
+              <input type="password" id="confirmPassword" name="repeatpassword" class="form-input" placeholder="Répétez votre mot de passe" required>
+          </div>
+          <button type="submit" class="btn btn-primary login-btn">S'inscrire</button>
+          <div class="auth-links">
+              <a href="{% url 'connexion' %}" class="create-account">J'ai déjà un compte</a>
+          </div>
+          {% if messages %}
+          <div>
+            {% for message in messages %}
+              <div class="alert {{ message.tags }} text-red text-center" style="color: red; text-align: center;">
+                {{ message }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </form>
   </div>
-{% endif %}
-  </form>
+</main>
 </div>
 {% endblock %}

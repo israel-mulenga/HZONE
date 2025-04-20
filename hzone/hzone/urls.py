@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path
 import hzone_app.views
 import authentification.views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("", authentification.views.landing, name="landing"),
@@ -26,5 +28,11 @@ urlpatterns = [
     path("inscription/", authentification.views.Inscription.as_view(), name="inscription"),
     path("password-forgot/", authentification.views.password_forgot, name="password-forgot"),
     path("logout/", authentification.views.logout_user, name="logout"),
-    path("home/", hzone_app.views.home, name="home" )
+    path("home/", hzone_app.views.home, name="home" ),
+    path("favoris/", hzone_app.views.favoris, name="favoris"),
+    path("listings/", hzone_app.views.listings, name="listings"),
 ]
+
+
+if settings.DEBUG :
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

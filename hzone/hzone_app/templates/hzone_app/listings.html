@@ -1,0 +1,108 @@
+{% extends 'hzone/app_base.html' %}
+{% block content %}
+<main class="main-content">
+    <section class="crud-section">
+        <h2 class="section-title">Créer une nouvelle annonce</h2>
+        <form id="annonceForm">
+            <div class="form-group">
+                <label class="form-label">Images</label>
+                <div class="image-preview" id="imagePreview">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Cliquez ou déposez vos images ici</span>
+                        <small>Vous pouvez sélectionner plusieurs images</small>
+                    </div>
+                    <div class="image-preview-container" id="imagePreviewContainer"></div>
+                </div>
+                <input type="file" id="imageInput" accept="image/*" multiple style="display: none">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="transactionType">Type de transaction</label>
+                <select id="transactionType" class="form-input" required>
+                    <option value="">Sélectionnez le type de transaction</option>
+                    <option value="vente">Vente</option>
+                    <option value="location">Location</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="type">Type de bien</label>
+                <select id="type" class="form-input" required>
+                    <option value="">Sélectionnez un type</option>
+                    <option value="maison">Maison</option>
+                    <option value="appartement">Appartement</option>
+                    <option value="chambre">Chambre</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="titre">Titre de l'annonce</label>
+                <input type="text" id="titre" class="form-input" placeholder="Ex: Maison à vendre" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="description">Description</label>
+                <textarea id="description" class="form-input form-textarea" placeholder="Décrivez votre bien immobilier..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="superficie">Superficie (m²)</label>
+                <input type="number" id="superficie" class="form-input" placeholder="Ex: 120" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="nombrePieces">Nombre de pièces</label>
+                <input type="number" id="nombrePieces" class="form-input" placeholder="Ex: 4" required min="1">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="espaceExterieur">Espace extérieur disponible</label>
+                <select id="espaceExterieur" class="form-input" required>
+                    <option value="">Sélectionnez une option</option>
+                    <option value="oui">Oui</option>
+                    <option value="non">Non</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="ville">Ville</label>
+                <input type="text" id="ville" class="form-input" placeholder="Ville" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="quartier">Quartier</label>
+                <input type="text" id="quartier" class="form-input" placeholder="Quartier" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="avenue">Avenue</label>
+                <input type="text" id="avenue" class="form-input" placeholder="Avenue" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="numero">Numéro</label>
+                <input type="number" id="" class="form-input" placeholder="" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="prix">Prix ($)</label>
+                <input type="number" id="prix" class="form-input" placeholder="200000" required>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">Publier l'annonce</button>
+                <button type="reset" class="btn btn-secondary">Réinitialiser</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="crud-section">
+        <h2 class="section-title">Mes annonces</h2>
+        <div class="annonces-list">
+            <!-- Les annonces seront générées dynamiquement ici -->
+        </div>
+    </section>
+</main>
+<script src="{static 'hzone_app/js/listings.js'}"></script>
+{% endblock %}

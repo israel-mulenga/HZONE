@@ -1,42 +1,39 @@
-{% extends 'hzone_app/landing_base.html' %} {% block content %}
-<div
-  class="d-flex justify-content-center align-items-center container-fluid rounded connexionContainer"
-  style="background-image: url(css/images/bg2.jpg)"
->
-  <form action="{% url 'connexion' %}" method="post" class="form-group border rounded bg-light w-100">
-    {% csrf_token %}
-    <input
-      type="text"
-      id="username"
-      placeholder="Votre username"
-      class="rounded form-control mb-3"
-      required
-      name="username"
-    />
-    <input
-      type="password"
-      id="password"
-      placeholder="Votre mot de passe"
-      class="rounded form-control"
-      required
-      name="password"
-    />
-    <button class="btn btn-primary mb-3 mt-3" type="submit">Se connecter</button>
-    <a
-      href="{% url 'password-forgot' %}"
-      class=" text-decoration-none"
-      >mot de passe oublié</a
-    >
-    {% if messages %}
-    <div>
-      {% for message in messages %}
-        <div class="alert {{ message.tags }} text-danger">
-          {{ message }}
+{% extends 'hzone/landing_base.html' %} {% block content %}
+<main class="main-content auth-container">
+  <div class="auth-card">
+      <div class="auth-header">
+          <h2>Connexion</h2>
+          <p>Connectez-vous pour accéder à votre compte</p>
+      </div>
+      <form class="auth-form" method="post">
+        {% csrf_token %}
+          <div class="form-group">
+              <label for="username">Nom d'utilisateur</label>
+              <input type="text" id="username" class="form-input" name="username" placeholder="Votre nom d'utilisateur" required>
+          </div>
+          <div class="form-group">
+              <label for="password">Mot de passe</label>
+              <input type="password" id="password" class="form-input" name="password" placeholder="Votre mot de passe" required>
+          </div>
+          <button type="submit" class="btn btn-primary login-btn">Se connecter</button>
+          <div class="auth-links">
+              <a href="{% url 'password-forgot' %}" class="forgot-password">Mot de passe oublié ?</a>
+              <span class="separator">•</span>
+              <a href="{% url 'inscription' %}" class="create-account">Créer un compte</a>
+          </div>
+          {% if messages %}
+          <div>
+            {% for message in messages %}
+              <div class="alert {{ message.tags }} text-red text-center" style="color: red; text-align: center;">
+                {{ message }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
         </div>
-      {% endfor %}
-    </div>
-  {% endif %}
+      </form>
   </div>
-  </form>
+</main>
+
  
 {% endblock %}

@@ -1,4 +1,7 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
+from .models import Listing, ListingImage
+
+admin.site.register(Listing)
+admin.site.register(ListingImage)
 
 # Register your models here.

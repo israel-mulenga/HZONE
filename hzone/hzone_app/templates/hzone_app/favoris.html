@@ -1,0 +1,14 @@
+{% extends 'hzone/app_base.html' %}
+{% block content%}
+<main class="listings">
+    <div class="no-favorites" style="display: none;">
+        <div class="empty-state">
+            <i class="fas fa-heart-broken"></i>
+            <h2>Aucun favori trouvé</h2>
+            <p>Vous n'avez pas encore ajouté d'annonce à vos favoris.</p>
+            <a href="accueil.html" class="btn btn-primary">Découvrir des annonces</a>
+        </div>
+    </div>
+    <!-- Les annonces favorites seront générées dynamiquement ici -->
+</main>
+{% endblock %}
