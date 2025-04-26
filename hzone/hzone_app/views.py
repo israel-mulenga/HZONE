@@ -70,3 +70,14 @@ def logout_view(request):
         return redirect('connexion')
     
 
+@login_required(login_url="connexion")
+def listing_detail(request, listing_id):
+    listing = Listing.objects.get(id=listing_id)
+    images = listing.images.all()
+    context = {
+        'listing': listing,
+        'images': images
+    }
+    return render(request, 'hzone_app/details.html', context)
+
+

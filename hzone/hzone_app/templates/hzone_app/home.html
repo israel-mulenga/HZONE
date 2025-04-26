@@ -36,7 +36,9 @@
               <div class="listing-icons">
                   <i class="fas fa-heart favorite {% if listing in user.favorites.all %}active{% endif %}"></i>
                   <i class="fas fa-phone"></i>
-                  <i class="fas fa-info-circle"></i>
+                  <a href="{% url 'listing_detail' listing.id %}">
+                    <i class="fas fa-info-circle"></i>
+                </a>
               </div>
               <p class="listing-price">{{ listing.price }} €</p>
               <div class="listing-actions">

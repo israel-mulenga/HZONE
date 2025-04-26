@@ -1,0 +1,129 @@
+{% extends 'hzone/app_base.html' %}
+{% block content %}
+{% load static %}
+<main class="main-content">
+    <div class="details-container">
+        <div class="back-button">
+            <a href="javascript:history.back()"><i class="fas fa-arrow-left"></i> Retour</a>
+        </div>
+        
+        <div class="property-details">
+            <div class="property-header">
+                <div class="property-title">
+                    <h1>{{ listing.title }}</h1>
+                    <div class="property-type-badge">
+                        {{ listing.property_type|title }} - {% if listing.transaction_type == 'vente' %} À vendre {% else %} À louer {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="property-images">
+                <div class="main-image">
+                    {% if listing.images.all %}
+                        <img id="mainImage" src="{{ listing.images.first.image.url }}" alt="{{ listing.title }}">
+                    {% else %}
+                        <img id="mainImage" src="{% static 'hzone_app/images/default.png' %}" alt="Image par défaut">
+                    {% endif %}
+                </div>
+                <div class="image-thumbnails">
+                    {% for img in listing.images.all %}
+                        <div class="thumbnail {% if forloop.first %}active{% endif %}">
+                            <img src="{{ img.image.url }}" alt="{{ listing.title }} image {{ forloop.counter }}">
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="property-info">
+                <div class="property-price">
+                    <h2>{{ listing.price }} $ {% if listing.transaction_type == 'location' %}/mois{% endif %}</h2>
+                </div>
+                
+                <div class="property-location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <p>{{ listing.city }}, {{ listing.district }}, {{ listing.street }} {{ listing.street_number }}</p>
+                </div>
+                
+                <div class="property-features">
+                    <div class="feature">
+                        <i class="fas fa-ruler-combined"></i>
+                        <p><strong>Superficie</strong><br>{{ listing.surface }} m²</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-door-open"></i>
+                        <p><strong>Pièces</strong><br>{{ listing.number_of_piece }}</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-tree"></i>
+                        <p><strong>Espace extérieur</strong><br>{% if listing.outdoor_space == 'oui' %}Oui{% else %}Non{% endif %}</p>
+                    </div>
+                </div>
+                
+                <div class="property-description">
+                    <h3>Description</h3>
+                    <p>{{ listing.description }}</p>
+                </div>
+                
+                <div class="property-actions">
+                    <a href="#" class="btn btn-primary">Faire une offre</a>
+                    <button class="btn btn-secondary share-property">
+                        <i class="fas fa-share-alt"></i> Partager
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+     // Gérer le clic sur les miniatures d'images
+     const thumbnails = document.querySelectorAll('.thumbnail');
+        const mainImage = document.querySelector('.main-image img');
+        
+        thumbnails.forEach(thumbnail => {
+            thumbnail.addEventListener('click', function() {
+                const imgSrc = this.querySelector('img').src;
+                mainImage.src = imgSrc;
+                
+                thumbnails.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Gérer le clic sur le bouton favori
+        const favoriteBtn = document.querySelector('.favorite-button');
+        if (favoriteBtn) {
+            favoriteBtn.addEventListener('click', function() {
+                this.classList.toggle('active');
+                
+                if (this.classList.contains('active')) {
+                    // Ajouter aux favoris
+                    favoriteAnnonces.push(annonce);
+                    this.querySelector('span').textContent = 'Retirer des favoris';
+                } else {
+                    // Retirer des favoris
+                    favoriteAnnonces = favoriteAnnonces.filter(a => a.id !== annonce.id);
+                    this.querySelector('span').textContent = 'Ajouter aux favoris';
+                }
+                
+                localStorage.setItem('favoriteAnnonces', JSON.stringify(favoriteAnnonces));
+                
+                // Animation
+                const icon = this.querySelector('i');
+                icon.style.fontSize = '1.5em';
+                setTimeout(() => {
+                    icon.style.fontSize = '1em';
+                }, 150);
+            });
+        }
+        
+        // Gérer le clic sur le bouton partager
+        const shareBtn = document.querySelector('.share-property');
+        if (shareBtn) {
+            shareBtn.addEventListener('click', function() {
+                // Simulation d'une fonctionnalité de partage
+                alert('Fonctionnalité de partage - URL copiée dans le presse-papier');
+            });
+        };
+</script>
+{% endblock %}
