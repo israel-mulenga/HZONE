@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponseRedirect, reverse
 from django.contrib.auth.decorators import login_required
 from .models import Listing, ListingImage
 from django.contrib.auth import logout
@@ -125,11 +125,8 @@ def listing_delete(request, listing_id):
     listing = Listing.objects.get(id=listing_id, owner=request.user)
     if request.method == 'POST':
         listing.delete()
-        return redirect('listings')
-    context = {
-        'listing': listing
-    }
-    return render(request, 'hzone_app/listing_delete.html', context)
+        return HttpResponseRedirect(reverse('listings') + '?succes=1') 
+    return redirect('listings')
 
 
 

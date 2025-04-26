@@ -124,7 +124,10 @@
                             <p class="listing-price">{{ listing.price }} €</p>
                             <div class="listing-actions">
                                 <a href="{% url 'listing_update' listing.id %}" class="action-button primary-button" style="text-align: center; text-decoration: none;">Modifier</a>
-                                <button class="btn btn-danger">Supprimer</button>
+                                <form action="{% url 'listing_delete' listing.id %}" class="delete-form" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                                </form>
                             </div>
                         </div>
                         </div>
@@ -137,6 +140,48 @@
     </section>
 </main>
 <script src="{static 'hzone_app/js/listings.js'}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const deleteForms = document.querySelectorAll('.delete-form');
+    
+        deleteForms.forEach(form => {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+    
+                Swal.fire({
+                    title: 'Êtes-vous sûr ?',
+                    text: "Cette action est irréversible !",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Oui, supprimer',
+                    cancelButtonText: 'Annuler'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // On soumet vraiment le formulaire
+                        form.submit();
+                    }
+                });
+            });
+        });
+    
+        // ✅ Message de succès si on revient sur la page après suppression
+        const success = new URLSearchParams(window.location.search).get('success');
+        if (success === '1') {
+            Swal.fire({
+                icon: 'success',
+                title: 'Supprimée !',
+                text: 'Votre annonce a bien été supprimée.',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        }
+    });
+    </script>
+    
+    
 <script>
  document.addEventListener('DOMContentLoaded', function() {
     const imagePreview = document.querySelector('.image-preview');
