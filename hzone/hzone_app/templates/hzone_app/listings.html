@@ -105,29 +105,29 @@
             <div class="listings">
                 {% if listings %}
                 {% for listing in listings %}
-                <div class="listing-card">
-                {% if listing.images.first %}
-                <!-- Débogage de l'URL d'image -->
-                    <img src="{{ listing.images.first.image.url }}" alt="{{ listing.title }}" class="listing-image">
-                {% else %}
-                    <img src="{% static 'hzone_app/images/default.png' %}" alt="{{ listing.title }}" class="listing-image">
-                {% endif %}
-                <div class="listing-content">
-                    <h2 class="listing-title">{{ listing.title|upper }}</h2>
-                    <p class="listing-description">{{ listing.description }}</p>
-                    <p class="listing-location">{{ listing.city }}/{{ listing.district }}/{{ listing.street }}/{{ listing.street_number }}</p>
-                    <div class="listing-icons">
-                        <i class="fas fa-heart favorite {% if listing in user.favorites.all %}active{% endif %}"></i>
-                        <i class="fas fa-phone"></i>
-                        <i class="fas fa-info-circle"></i>
-                    </div>
-                    <p class="listing-price">{{ listing.price }} €</p>
-                    <div class="listing-actions">
-                        <button class="action-button primary-button">Faire une offre</button>
-                        <button class="action-button secondary-button">Détails...</button>
-                    </div>
-                </div>
-                </div>
+                    <div class="listing-card">
+                        {% if listing.images.first %}
+                        <!-- Débogage de l'URL d'image -->
+                            <img src="{{ listing.images.first.image.url }}" alt="{{ listing.title }}" class="listing-image">
+                        {% else %}
+                            <img src="{% static 'hzone_app/images/default.png' %}" alt="{{ listing.title }}" class="listing-image">
+                        {% endif %}
+                        <div class="listing-content">
+                            <h2 class="listing-title">{{ listing.title|upper }}</h2>
+                            <p class="listing-description">{{ listing.description }}</p>
+                            <p class="listing-location">{{ listing.city }}/{{ listing.district }}/{{ listing.street }}/{{ listing.street_number }}</p>
+                            <div class="listing-icons">
+                                <i class="fas fa-heart favorite {% if listing in user.favorites.all %}active{% endif %}"></i>
+                                <i class="fas fa-phone"></i>
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <p class="listing-price">{{ listing.price }} €</p>
+                            <div class="listing-actions">
+                                <a href="{% url 'listing_update' listing.id %}" class="action-button primary-button" style="text-align: center; text-decoration: none;">Modifier</a>
+                                <button class="btn btn-danger">Supprimer</button>
+                            </div>
+                        </div>
+                        </div>
             {% endfor %}
             {% else %}
                 <p>Aucune annonce trouvée.</p>

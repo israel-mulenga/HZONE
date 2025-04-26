@@ -1,0 +1,200 @@
+{% extends 'hzone/app_base.html' %}
+{% load static %}
+{% block content %}
+
+<main class="main-content">
+    <section class="crud-section">
+        <h2 class="section-title">Modifier l'annonce</h2>
+
+        <form method="post" enctype="multipart/form-data" id="annonceForm">
+            {% csrf_token %}
+
+            <!-- Images Preview -->
+            <div class="form-group">
+                <label class="form-label">Images</label>
+                <div class="image-preview" id="imagePreview">
+
+                    <!-- Container pour toutes les previews (anciennes + nouvelles) -->
+                    <div class="image-preview-container" id="imagePreviewContainer">
+                        <!-- Images existantes -->
+                        {% for img in images %}
+                            <div class="preview-item existing" data-image-id="{{ img.id }}">
+                                <img src="{{ img.image.url }}" alt="Ancienne image" />
+                                <div class="remove-image">
+                                    <i class="fas fa-times"></i>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                
+                    <!-- Zone pour uploader -->
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Cliquez ou déposez vos images ici</span>
+                        <small>Vous pouvez sélectionner plusieurs images</small>
+                    </div>
+                
+                </div>
+                
+                <input type="file" id="imageInput" accept="image/*" name="images" multiple style="display: none;">
+            </div>
+
+            <input type="hidden" name="deleted_images" id="deletedImages">
+
+            <!-- Champs Texte -->
+            <div class="form-group">
+                <label class="form-label">Titre</label>
+                <input type="text" name="title" class="form-input" value="{{ listing.title }}" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea name="description" class="form-input form-textarea" required>{{ listing.description }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Type de transaction</label>
+                <select name="transactionType" class="form-input" required>
+                    <option value="vente" {% if listing.transaction_type == 'vente' %}selected{% endif %}>Vente</option>
+                    <option value="location" {% if listing.transaction_type == 'location' %}selected{% endif %}>Location</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Type de bien</label>
+                <select name="propertyType" class="form-input" required>
+                    <option value="maison" {% if listing.property_type == 'maison' %}selected{% endif %}>Maison</option>
+                    <option value="appartement" {% if listing.property_type == 'appartement' %}selected{% endif %}>Appartement</option>
+                    <option value="terrain" {% if listing.property_type == 'terrain' %}selected{% endif %}>Terrain</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Superficie (m²)</label>
+                <input type="number" name="surface" class="form-input" value="{{ listing.surface }}" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Nombre de pièces</label>
+                <input type="number" name="number_of_pieces" class="form-input" value="{{ listing.number_of_piece }}" min="1" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Espace extérieur</label>
+                <select name="outdoorSpace" class="form-input" required>
+                    <option value="oui" {% if listing.outdoor_space == 'oui' %}selected{% endif %}>Oui</option>
+                    <option value="non" {% if listing.outdoor_space == 'non' %}selected{% endif %}>Non</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Ville</label>
+                <input type="text" name="city" class="form-input" value="{{ listing.city }}" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Quartier</label>
+                <input type="text" name="district" class="form-input" value="{{ listing.district }}" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Rue</label>
+                <input type="text" name="street" class="form-input" value="{{ listing.street }}">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Numéro</label>
+                <input type="text" name="streetNumber" class="form-input" value="{{ listing.street_number }}" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Prix ($)</label>
+                <input type="number" name="price" class="form-input" value="{{ listing.price }}" required>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">Modifier l'annonce</button>
+                <a href="{% url 'listings' %}" class="btn btn-secondary">Annuler</a>
+            </div>
+
+        </form>
+    </section>
+</main>
+
+<!-- SCRIPT -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const imagePreview = document.querySelector('.image-preview');
+    const imagePreviewContainer = document.querySelector('.image-preview-container');
+    const fileInput = document.querySelector('#imageInput');
+    const deletedImagesInput = document.querySelector('#deletedImages');
+
+    let allImages = [];
+    let deletedImageIds = [];
+
+    if (imagePreview) {
+        imagePreview.addEventListener('click', function(e) {
+            if (!e.target.closest('.remove-image')) {
+                fileInput.click();
+            }
+        });
+    }
+
+    if (fileInput) {
+        fileInput.addEventListener('change', function(e) {
+            const newFiles = Array.from(e.target.files);
+            allImages = allImages.concat(newFiles);
+            updateImagePreview();
+            updateFileInput();
+        });
+    }
+
+    function updateImagePreview() {
+        const newPreviews = imagePreviewContainer.querySelectorAll('.preview-item.new');
+        newPreviews.forEach(preview => preview.remove());
+
+
+        allImages.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const previewItem = document.createElement('div');
+                previewItem.className = 'preview-item new';
+                previewItem.innerHTML = `
+                    <img src="${e.target.result}" alt="Image preview">
+                    <div class="remove-image" data-index="${index}">
+                        <i class="fas fa-times"></i>
+                    </div>
+                `;
+                imagePreviewContainer.appendChild(previewItem);
+
+                previewItem.querySelector('.remove-image').addEventListener('click', function() {
+                    allImages.splice(index, 1);
+                    updateImagePreview();
+                    updateFileInput();
+                });
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function updateFileInput() {
+        const dataTransfer = new DataTransfer();
+        allImages.forEach(file => dataTransfer.items.add(file));
+        fileInput.files = dataTransfer.files;
+    }
+
+    // Suppression des anciennes images existantes
+    document.querySelectorAll('.preview-item.existing .remove-image').forEach(button => {
+        button.addEventListener('click', function() {
+            const imageId = this.parentElement.dataset.imageId;
+            if (imageId) {
+                deletedImageIds.push(imageId);
+                deletedImagesInput.value = deletedImageIds.join(',');
+                this.parentElement.remove();
+            }
+        });
+    });
+});
+</script>
+
+{% endblock %}

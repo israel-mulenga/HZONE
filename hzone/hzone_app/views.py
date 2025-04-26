@@ -80,4 +80,56 @@ def listing_detail(request, listing_id):
     }
     return render(request, 'hzone_app/details.html', context)
 
+@login_required(login_url="connexion")
+def listing_update(request, listing_id):
+    listing = Listing.objects.get(id=listing_id, owner=request.user)
+    images = listing.images.all()
+
+    if request.method == 'POST':
+        # Update des champs texte
+        listing.title = request.POST.get("title")
+        listing.description = request.POST.get("description")
+        listing.transaction_type = request.POST.get("transactionType")
+        listing.surface = request.POST.get("surface")
+        listing.number_of_piece = request.POST.get("number_of_pieces")
+        listing.property_type = request.POST.get("propertyType")
+        listing.outdoor_space = request.POST.get("outdoorSpace")
+        listing.city = request.POST.get("city")
+        listing.district = request.POST.get("district")
+        listing.street = request.POST.get("street")
+        listing.street_number = request.POST.get("streetNumber")
+        listing.price = request.POST.get("price")
+        listing.save()
+
+        # Gérer la suppression des anciennes images
+        deleted_images = request.POST.get('deleted_images')
+        if deleted_images:
+            image_ids = deleted_images.split(',')
+            ListingImage.objects.filter(id__in=image_ids, listing=listing).delete()
+
+        # Gérer l'ajout de nouvelles images
+        images = request.FILES.getlist('images')
+        for image in images:
+            ListingImage.objects.create(listing=listing, image=image)
+
+        return redirect('listings')
+
+    context = {
+        'listing': listing,
+        'images': images
+    }
+    return render(request, 'hzone_app/listing_update.html', context)
+
+@login_required(login_url="connexion")
+def listing_delete(request, listing_id):
+    listing = Listing.objects.get(id=listing_id, owner=request.user)
+    if request.method == 'POST':
+        listing.delete()
+        return redirect('listings')
+    context = {
+        'listing': listing
+    }
+    return render(request, 'hzone_app/listing_delete.html', context)
+
+
 

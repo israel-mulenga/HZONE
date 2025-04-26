@@ -43,7 +43,7 @@
               <p class="listing-price">{{ listing.price }} €</p>
               <div class="listing-actions">
                   <button class="action-button primary-button">Faire une offre</button>
-                  <button class="action-button secondary-button">Détails...</button>
+                  <a href="{% url 'listing_detail' listing.id %}" class="action-button secondary-button"  style="text-align: center;">Details...</a>
               </div>
           </div>
         </div>
