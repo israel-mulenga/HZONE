@@ -36,4 +36,4 @@ class Listing(models.Model):
 class ListingImage(models.Model):
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='listing_images/')
-    uplaoaded_at = models.DateTimeField(auto_now_add=True)
+    uploaded_at = models.DateTimeField(auto_now_add=True)

@@ -1,9 +1,11 @@
 {% extends 'hzone/app_base.html' %}
 {% block content %}
+{% load static %}
 <main class="main-content">
     <section class="crud-section">
         <h2 class="section-title">Créer une nouvelle annonce</h2>
-        <form id="annonceForm">
+        <form method="post" enctype="multipart/form-data" id="annonceForm">
+            {% csrf_token %}
             <div class="form-group">
                 <label class="form-label">Images</label>
                 <div class="image-preview" id="imagePreview">
@@ -14,12 +16,12 @@
                     </div>
                     <div class="image-preview-container" id="imagePreviewContainer"></div>
                 </div>
-                <input type="file" id="imageInput" accept="image/*" multiple style="display: none">
+                <input type="file" id="imageInput" accept="image/*" name="images" multiple style="display: none">
             </div>
 
             <div class="form-group">
                 <label class="form-label" for="transactionType">Type de transaction</label>
-                <select id="transactionType" class="form-input" required>
+                <select id="transactionType" class="form-input" required name="transactionType">
                     <option value="">Sélectionnez le type de transaction</option>
                     <option value="vente">Vente</option>
                     <option value="location">Location</option>
@@ -28,7 +30,7 @@
 
             <div class="form-group">
                 <label class="form-label" for="type">Type de bien</label>
-                <select id="type" class="form-input" required>
+                <select id="type" class="form-input" required name="propertyType">
                     <option value="">Sélectionnez un type</option>
                     <option value="maison">Maison</option>
                     <option value="appartement">Appartement</option>
@@ -38,27 +40,27 @@
 
             <div class="form-group">
                 <label class="form-label" for="titre">Titre de l'annonce</label>
-                <input type="text" id="titre" class="form-input" placeholder="Ex: Maison à vendre" required>
+                <input type="text" id="titre" class="form-input" placeholder="Ex: Maison à vendre" name="title" required>
             </div>
 
             <div class="form-group">
                 <label class="form-label" for="description">Description</label>
-                <textarea id="description" class="form-input form-textarea" placeholder="Décrivez votre bien immobilier..." required></textarea>
+                <textarea id="description" class="form-input form-textarea" name="description" placeholder="Décrivez votre bien immobilier..." required></textarea>
             </div>
 
             <div class="form-group">
                 <label class="form-label" for="superficie">Superficie (m²)</label>
-                <input type="number" id="superficie" class="form-input" placeholder="Ex: 120" required>
+                <input type="number" id="superficie" class="form-input" name="surface" placeholder="Ex: 120" required>
             </div>
 
             <div class="form-group">
                 <label class="form-label" for="nombrePieces">Nombre de pièces</label>
-                <input type="number" id="nombrePieces" class="form-input" placeholder="Ex: 4" required min="1">
+                <input type="number" id="nombrePieces" class="form-input" placeholder="Ex: 4" required min="1" name="number_of_pieces">
             </div>
 
             <div class="form-group">
                 <label class="form-label" for="espaceExterieur">Espace extérieur disponible</label>
-                <select id="espaceExterieur" class="form-input" required>
+                <select id="espaceExterieur" class="form-input" required name="outdoorSpace">
                     <option value="">Sélectionnez une option</option>
                     <option value="oui">Oui</option>
                     <option value="non">Non</option>
@@ -67,27 +69,27 @@
 
             <div class="form-group">
                 <label class="form-label" for="ville">Ville</label>
-                <input type="text" id="ville" class="form-input" placeholder="Ville" required>
+                <input type="text" id="ville" class="form-input" placeholder="Ville" name="city" required>
             </div>
 
             <div class="form-group">
                 <label class="form-label" for="quartier">Quartier</label>
-                <input type="text" id="quartier" class="form-input" placeholder="Quartier" required>
+                <input type="text" id="quartier" class="form-input" placeholder="Quartier" name="district" required>
             </div>
 
             <div class="form-group">
                 <label class="form-label" for="avenue">Avenue</label>
-                <input type="text" id="avenue" class="form-input" placeholder="Avenue" required>
+                <input type="text" id="avenue" class="form-input" placeholder="Avenue" name="street" required>
             </div>
 
             <div class="form-group">
                 <label class="form-label" for="numero">Numéro</label>
-                <input type="number" id="" class="form-input" placeholder="" required>
+                <input type="number" id="" class="form-input" placeholder="" required name="streetNumber">
             </div>
 
             <div class="form-group">
                 <label class="form-label" for="prix">Prix ($)</label>
-                <input type="number" id="prix" class="form-input" placeholder="200000" required>
+                <input type="number" id="prix" class="form-input" placeholder="200000" name="price" required>
             </div>
 
             <div class="button-group">
@@ -100,9 +102,102 @@
     <section class="crud-section">
         <h2 class="section-title">Mes annonces</h2>
         <div class="annonces-list">
-            <!-- Les annonces seront générées dynamiquement ici -->
+            <div class="listings">
+                {% if listings %}
+                {% for listing in listings %}
+                <div class="listing-card">
+                {% if listing.images.first %}
+                <!-- Débogage de l'URL d'image -->
+                    <img src="{{ listing.images.first.image.url }}" alt="{{ listing.title }}" class="listing-image">
+                {% else %}
+                    <img src="{% static 'hzone_app/images/default.png' %}" alt="{{ listing.title }}" class="listing-image">
+                {% endif %}
+                <div class="listing-content">
+                    <h2 class="listing-title">{{ listing.title|upper }}</h2>
+                    <p class="listing-description">{{ listing.description }}</p>
+                    <p class="listing-location">{{ listing.city }}/{{ listing.district }}/{{ listing.street }}/{{ listing.street_number }}</p>
+                    <div class="listing-icons">
+                        <i class="fas fa-heart favorite {% if listing in user.favorites.all %}active{% endif %}"></i>
+                        <i class="fas fa-phone"></i>
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <p class="listing-price">{{ listing.price }} €</p>
+                    <div class="listing-actions">
+                        <button class="action-button primary-button">Faire une offre</button>
+                        <button class="action-button secondary-button">Détails...</button>
+                    </div>
+                </div>
+                </div>
+            {% endfor %}
+            {% else %}
+                <p>Aucune annonce trouvée.</p>
+            {% endif %}
+            </div>
         </div>
     </section>
 </main>
 <script src="{static 'hzone_app/js/listings.js'}"></script>
+<script>
+ document.addEventListener('DOMContentLoaded', function() {
+    const imagePreview = document.querySelector('.image-preview');
+    const imagePreviewContainer = document.querySelector('.image-preview-container');
+    const fileInput = document.querySelector('#imageInput');
+
+    // 👇 Liste cumulative des fichiers sélectionnés
+    let allImages = [];
+
+    if (imagePreview) {
+        imagePreview.addEventListener('click', function() {
+            fileInput.click();
+        });
+    }
+
+    if (fileInput) {
+        fileInput.addEventListener('change', function(e) {
+            const newFiles = Array.from(e.target.files);
+            allImages = allImages.concat(newFiles);
+
+            updateImagePreview();
+
+            // 💡 Créer un DataTransfer pour réinjecter les fichiers dans l'input
+            const dataTransfer = new DataTransfer();
+            allImages.forEach(file => dataTransfer.items.add(file));
+            fileInput.files = dataTransfer.files;
+        });
+    }
+
+    function updateImagePreview() {
+        imagePreviewContainer.innerHTML = '';
+
+        allImages.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const previewItem = document.createElement('div');
+                previewItem.className = 'preview-item';
+                previewItem.innerHTML = `
+                    <img src="${e.target.result}" alt="Image preview">
+                    <div class="remove-image" data-index="${index}">
+                        <i class="fas fa-times"></i>
+                    </div>
+                `;
+                imagePreviewContainer.appendChild(previewItem);
+
+                // ✂️ Supprimer une image de la liste
+                previewItem.querySelector('.remove-image').addEventListener('click', function() {
+                    allImages.splice(index, 1);
+                    updateImagePreview();
+
+                    const dataTransfer = new DataTransfer();
+                    allImages.forEach(file => dataTransfer.items.add(file));
+                    fileInput.files = dataTransfer.files;
+                });
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+});
+
+
+</script>
+
 {% endblock %}

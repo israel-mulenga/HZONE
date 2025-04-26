@@ -20,6 +20,7 @@ import hzone_app.views
 import authentification.views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     path("", authentification.views.landing, name="landing"),
@@ -27,7 +28,7 @@ urlpatterns = [
     path("connexion/", authentification.views.connexion, name="connexion"),
     path("inscription/", authentification.views.Inscription.as_view(), name="inscription"),
     path("password-forgot/", authentification.views.password_forgot, name="password-forgot"),
-    path("logout/", authentification.views.logout_user, name="logout"),
+    path("logout/", hzone_app.views.logout_view, name="logout"),
     path("home/", hzone_app.views.home, name="home" ),
     path("favoris/", hzone_app.views.favoris, name="favoris"),
     path("listings/", hzone_app.views.listings, name="listings"),

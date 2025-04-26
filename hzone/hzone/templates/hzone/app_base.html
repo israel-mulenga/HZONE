@@ -18,13 +18,15 @@
                 <a href="{% url 'listings' %}">Publier une annonce</a>
                 <a href="{% url 'favoris' %}">Mes favoris</a>
                 <a href="">Notifications</a>
-                <a href="">
-                    <img src="{{request.user.profil_photo.url}}" alt="">
-
-                </a>
-                <a href="">
-                    {{request.user.username}}
-                </a>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    {% if request.user.profile_photo %}
+                        <button type="submit" style="border: none; background-color: transparent; cursor: pointer;"><img src="{{ request.user.profile_photo.url }}" alt="Photo de profil" class="profile-photo"></button>
+                    {% else %}
+                        <button type="submit" class="btn btn-danger">Logout</button>
+                    {% endif %}
+                </form>
+            
                 
             </div>
             <button class="burger-menu">
@@ -34,6 +36,16 @@
             </button>
         </div>
     </nav>
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <p>Tu es sûr de vouloir te déconnecter ?</p>
+          <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">Se déconnecter</button>
+          </form>
+        </div>
+      </div>
     {% block content %}
     {% endblock %}
     <script src="{% static 'hzone_app/js/navbar.js' %}"></script>

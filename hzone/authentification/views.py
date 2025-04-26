@@ -22,8 +22,10 @@ class Inscription(View):
 
         if password != repeatpassword:
             messages.error(request, "Les mots de passe ne correspondent pas.")
+            return self.get(request)
         elif self.User.objects.filter(username=username).exists():
             messages.error(request, "Ce nom d'utilisateur est déjà utilisé.")
+            return self.get(request)
         else:
             user = self.User.objects.create_user(
                 username=username, 
@@ -34,15 +36,12 @@ class Inscription(View):
                 profile_photo=profilephoto
             )
             login(request, user)
-            return render(request, self.home_page, context={'user': user})
-        return render(request, self.inscription_page)
+            return redirect('home')
 
 def landing(request):
     return render(request, 'authentification/index.html')
 
-def logout_user(request):
-    logout(request)
-    return render(request, "authentification/connexion.html")
+
 
 def connexion(request):
     if request.method == 'POST':
@@ -58,33 +57,6 @@ def connexion(request):
 
 
 
-    User = get_user_model()
-    if request.method == "POST":
-        firstname = request.POST.get("firstname")
-        lastname = request.POST.get("lastname")
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-        repeatpassword = request.POST.get("repeatpassword")
-        phonenumber = request.POST.get("phone_number")
-        profilephoto = request.FILES.get("profile_photo")
-
-        if password != repeatpassword:
-            messages.error(request, "Les mots de passe ne correspondent pas.")
-        elif User.objects.filter(username=username).exists():
-            messages.error(request, "Ce nom d'utilisateur est déjà utilisé.")
-        else:
-            user = User.objects.create_user(
-                username=username, 
-                first_name=firstname, 
-                last_name=lastname,
-                password=password,
-                phone_number=phonenumber,
-                profile_photo=profilephoto
-            )
-            login(request, user)
-            return render(request, 'hzone_app/home.html', context={'user': user})
-        return render(request, c)
-    return render(request, 'authentification/inscription.html')
-
 def password_forgot(request):
     return render(request, "authentification/password_forgot.html")
+

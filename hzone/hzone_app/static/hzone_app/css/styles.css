@@ -19,6 +19,9 @@
   margin-right: 5px;
 }
 
+/* Search bar improvements */
+
+
 /*Connexion et Inscrption*/
 .connexionContainer {
   min-height: 100vh;
@@ -80,4 +83,11 @@ dialog::backdrop {
   border-radius: 5px;
   padding: 10px;
   cursor: pointer;
+}
+
+.profile-photo {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
 }

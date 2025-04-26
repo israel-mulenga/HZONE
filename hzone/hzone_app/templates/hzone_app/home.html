@@ -1,14 +1,21 @@
 {% extends 'hzone/app_base.html' %}
+{% load static %}
 {% block content %} 
     <section class="search-section">
         <div class="search-container">
-            <form>
-                {% csrf_token %}
-                <div class="search-form">
-                    <input type="text" class="search-input" placeholder="Filtrer par type de bien...">
-                    <input type="text" class="search-input" placeholder="Rechercher par quartier...">
-                    <button class="search-button">Rechercher</button>
-                </div>
+            <form method="GET" action="{% url 'home' %}" class="search-form">
+                
+                    <div class="search-inputs">
+                        <select class="search-input" name="property_type">
+                            <option value="">Filtrer par type de bien...</option>
+                            <option value="maison">Maison</option>
+                            <option value="appartement">Appartement</option>
+                            <option value="chambre">Chambre</option>
+                        </select>
+                        <input type="text" name="location" class="search-input" placeholder="Rechercher par quartier...">
+                        <button type="submit" class="search-button">Rechercher</button>
+                    </div>
+                    
             </form>
         </div>
     </section>
@@ -16,17 +23,22 @@
     <main class="listings">
        {% for listing in listings %}
         <div class="listing-card">
-          <img src="{{ listing.images.first.url }}" alt="{{ listing.title }}" class="listing-image">
+          {% if listing.images.first %}
+          <!-- Débogage de l'URL d'image -->
+              <img src="{{ listing.images.first.image.url }}" alt="{{ listing.title }}" class="listing-image">
+          {% else %}
+              <img src="{% static 'hzone_app/images/default.png' %}" alt="{{ listing.title }}" class="listing-image">
+          {% endif %}
           <div class="listing-content">
-              <h2 class="listing-title">{{ listing.title.uppercase }}</h2>
+              <h2 class="listing-title">{{ listing.title|upper }}</h2>
               <p class="listing-description">{{ listing.description }}</p>
               <p class="listing-location">{{ listing.city }}/{{ listing.district }}/{{ listing.street }}/{{ listing.street_number }}</p>
               <div class="listing-icons">
-                  <i class="fas fa-heart favorite ${isFavorite ? 'active' : ''}"></i>
+                  <i class="fas fa-heart favorite {% if listing in user.favorites.all %}active{% endif %}"></i>
                   <i class="fas fa-phone"></i>
                   <i class="fas fa-info-circle"></i>
               </div>
-              <p class="listing-price">{{ listing.price }} $</p>
+              <p class="listing-price">{{ listing.price }} €</p>
               <div class="listing-actions">
                   <button class="action-button primary-button">Faire une offre</button>
                   <button class="action-button secondary-button">Détails...</button>

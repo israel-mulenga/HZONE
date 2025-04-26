@@ -5,7 +5,7 @@
           <h2>Inscription</h2>
           <p>Créez votre compte pour accéder à toutes nos fonctionnalités</p>
       </div>
-      <form class="auth-form" method="post">
+      <form class="auth-form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
           <div class="form-row">
               <div class="form-group">
