@@ -7,7 +7,7 @@
     <title>ImmoConnect - Annonces Immobilières</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'hzone/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'hzone_app/css/styles.css' %}">
 </head>
 <body>
     <nav class="navbar">
@@ -36,16 +36,7 @@
             </button>
         </div>
     </nav>
-    <div id="logoutModal" class="modal">
-        <div class="modal-content">
-          <span class="close">&times;</span>
-          <p>Tu es sûr de vouloir te déconnecter ?</p>
-          <form method="POST" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <button type="submit">Se déconnecter</button>
-          </form>
-        </div>
-      </div>
+
     {% block content %}
     {% endblock %}
     <script src="{% static 'hzone_app/js/navbar.js' %}"></script>

@@ -35,6 +35,7 @@ urlpatterns = [
     path("listing/<int:listing_id>/", hzone_app.views.listing_detail, name="listing_detail"),
     path("listing/update/<int:listing_id>/", hzone_app.views.listing_update, name="listing_update"),
     path("listing/delete/<int:listing_id>/", hzone_app.views.listing_delete, name="listing_delete"),
+    
 ]
 
 

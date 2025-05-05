@@ -26,12 +26,16 @@ SECRET_KEY = 'django-insecure-mpfkof5lefigm%f+igsorzbknqb72(b^e1*cobq$_rn6co20_&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'channels_redis',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,6 +45,7 @@ INSTALLED_APPS = [
     'hzone_app',
     'authentification',
     'hzone',
+    'messagerie',
 ]
 
 MIDDLEWARE = [
@@ -70,7 +75,18 @@ TEMPLATES = [
     },
 ]
 
+
+ASGI_APPLICATION = 'hzone.asgi.application'
 WSGI_APPLICATION = 'hzone.wsgi.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND" : "channels_redis.core.RedisChannelLayer",
+        "CONFIG" :{
+            "hosts" : [("127.0.0.1", 6379)],
+        },
+    }
+}
 
 
 # Database
@@ -118,7 +134,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+
+
+
+
+
+# 📌 ✅ Correction des erreurs de syntaxe et de noms de variables
+STATIC_URL = '/static/'  # ✅ Corrige la faute de frappe !
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # ✅ Assure-toi que ce dossier existe !
+]
+#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # ✅ Dossier où seront copiés les fichiers
+
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'  # ✅ Correction du nom !
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
