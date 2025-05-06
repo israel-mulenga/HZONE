@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from channels.auth import AuthMiddlewareStack
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -81,6 +82,7 @@ WSGI_APPLICATION = 'hzone.wsgi.application'
 
 CHANNEL_LAYERS = {
     "default": {
+        #"BACKEND" : "channels.layers.InMemoryChannelLayer",
         "BACKEND" : "channels_redis.core.RedisChannelLayer",
         "CONFIG" :{
             "hosts" : [("127.0.0.1", 6379)],
