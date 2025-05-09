@@ -1,0 +1,215 @@
+{% extends 'hzone/app_base.html' %}
+{% block content %}
+{% load static %}
+<span id="discussion_id" hidden>{{ discussion.id }}</span>
+<main class="main-content">
+    <div class="chat-container">
+        <div class="chat-sidebar">
+            <div class="back-button">
+                <a href="javascript:history.back()"><i class="fas fa-arrow-left"></i> Retour</a>
+            </div>
+            
+            <div class="property-card">
+                <div class="property-images">
+
+                    <div class="main-image" style="height: 200px;">
+                        {% if listing.images.all %}
+                            <img id="mainImage" class="selected" src="{{ listing.images.first.image.url }}" alt="{{ listing.title }}">
+                        {% else %}
+                            <img id="mainImage" class="selected" src="{% static 'hzone_app/images/default.png' %}" alt="Image par défaut">
+                        {% endif %}
+                    </div>
+                    
+                    <div class="image-thumbnails">
+                        {% for img in listing.images.all %}
+                            <div class="thumbnail" onclick="changeMainImage('{{ img.image.url }}')">
+                                <img src="{{ img.image.url }}" alt="{{ listing.title }} image {{ forloop.counter }}">
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            
+                <div class="property-info">
+                    <h3 id="propertyTitle">{{ listing.title }}</h3>
+                    <p id="propertyLocation">{{ listing.city }}, {{ listing.district }}</p>
+                    <p class="property-price" id="propertyPrice">{{ listing.price }} $</p>
+                </div>  
+            </div>
+            
+        </div>
+            
+        <div class="chat-main">
+            <div class="chat-header">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        {% if receiver_photo %}
+                            <img src="{{ receiver_photo }}" alt="Avatar du propriétaire">
+                        {% else %}
+                            <img src="https://via.placeholder.com/150" alt="Avatar par défaut">
+                        {% endif %}
+
+                        <span class="online-status"></span>
+                    </div>
+                    <div class="user-details">
+                        <h3>{{ receiver.username }}</h3>
+                        <p>Propriétaire</p>
+                        <span id="receiver_username" hidden>{{ receiver.username }}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                {% for message in messages %}
+                    <div class="message {% if message.sender == request.user %}sent{% else %}received{% endif %}">
+                        <div class="message-content">
+                            <p>{{ message.content }}</p>
+                            <span class="message-time">{{ message.timestamp|date:"H:i" }}</span>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="no-messages">Aucun message pour le moment.</p>
+                {% endfor %}
+            </div>
+            
+            <div class="chat-input">
+                <div class="input-container">
+                    <input type="text" id="messageInput" placeholder="Écrivez votre message...">
+                    <button id="sendButton">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div> 
+    </div>
+            
+        </div>
+        
+        
+</main>
+
+<script src="{% static 'hzone_app/js/navbar.js' %}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const thumbnails = document.querySelectorAll(".thumbnail img");
+        const mainImage = document.getElementById("mainImage");
+    
+        thumbnails.forEach(thumbnail => {
+            thumbnail.addEventListener("click", function() {
+                mainImage.src = this.src;
+            });
+        });
+    });
+    </script>
+    
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    let discussionId = document.getElementById("discussion_id").textContent;
+    let currentUser = "{{ request.user.username }}"; // ✅ Récupère l'utilisateur connecté
+    let socket = new WebSocket(`ws://127.0.0.1:8000/ws/chat/${discussionId}/`);
+
+    socket.onopen = function() {
+        console.log("✅ WebSocket connecté !");
+    };
+
+    socket.onerror = function(error) {
+        console.error("❌ Erreur WebSocket :", error);
+    };
+
+    socket.onclose = function(event) {
+        console.log("❌ WebSocket déconnecté :", event);
+    };
+
+    socket.onmessage = function(event) {
+        try {
+            let data = JSON.parse(event.data);
+
+            if (!data.message || !data.sender || !data.receiver) {
+                console.error("❌ Message mal formaté :", data);
+                return;
+            }
+
+            console.log(`✅ Message reçu en temps réel :`, data);
+
+            addMessage({
+                sender: data.sender,
+                receiver: data.receiver,
+                content: data.message,
+                time: data.timestamp,
+                className: data.sender === currentUser ? "sent" : "received" 
+            });
+        } catch (error) {
+            console.error("❌ Erreur JSON :", error);
+        }
+    };
+
+    document.getElementById("sendButton").addEventListener("click", sendMessage);
+    document.getElementById("messageInput").addEventListener("keypress", function(e) {
+        if (e.key === "Enter") sendMessage();
+    });
+
+    function sendMessage() {
+        let messageInput = document.getElementById("messageInput");
+        let messageContent = messageInput.value.trim();
+
+        if (messageContent === "") return;
+
+        socket.send(JSON.stringify({
+            discussion_id: discussionId,
+            sender: currentUser,
+            message: messageContent
+        }));
+
+        messageInput.value = "";
+    }
+
+    function addMessage(message) {
+        const messageDiv = document.createElement("div");
+        messageDiv.className = `message ${message.className}`; 
+
+        const messageContentDiv = document.createElement("div");
+        messageContentDiv.className = "message-content";
+
+        const messageText = document.createElement("p");
+        messageText.textContent = message.content;
+
+        const messageTime = document.createElement("span");
+        messageTime.className = "message-time";
+        messageTime.textContent = message.time;
+
+        messageContentDiv.appendChild(messageText);
+        messageContentDiv.appendChild(messageTime);
+        messageDiv.appendChild(messageContentDiv);
+
+        document.getElementById("chatMessages").appendChild(messageDiv);
+        document.getElementById("chatMessages").scrollTop = document.getElementById("chatMessages").scrollHeight;
+
+        console.log(`✅ Message enregistré : ${message.sender} → ${message.receiver} : ${message.content}`); // ✅ Debug uniquement en console
+    }
+    fetch(`/chat/messages/${discussionId}/`)
+    .then(response => response.json())
+    .then(data => {
+        console.log("✅ Messages récupérés :", data); // ✅ Debugging en console navigateur
+
+        let currentUser = "{{ request.user.username }}";
+        let receiver = document.getElementById("receiver_username").textContent;  // ✅ Assure que le bon correspondant est récupéré
+
+        document.getElementById("chatMessages").innerHTML = "";
+
+        data.messages.forEach(msg => {
+            let messageClass = msg.sender === currentUser ? "sent" : "received"; // ✅ Corrige la classification
+
+            addMessage({
+                sender: msg.sender,
+                receiver: msg.receiver,
+                content: msg.content,
+                time: new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                className: messageClass
+            });
+        });
+    })
+    .catch(error => console.error("❌ Erreur lors de la récupération des messages :", error));
+    });
+
+
+</script>
+{% endblock %}

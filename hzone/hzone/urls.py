@@ -18,9 +18,11 @@ from django.contrib import admin
 from django.urls import path
 import hzone_app.views
 import authentification.views
+import messagerie.views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth.views import LogoutView
+
 
 urlpatterns = [
     path("", authentification.views.landing, name="landing"),
@@ -35,6 +37,9 @@ urlpatterns = [
     path("listing/<int:listing_id>/", hzone_app.views.listing_detail, name="listing_detail"),
     path("listing/update/<int:listing_id>/", hzone_app.views.listing_update, name="listing_update"),
     path("listing/delete/<int:listing_id>/", hzone_app.views.listing_delete, name="listing_delete"),
+    path('messagerie/<int:listing_id>/<str:receiver_username>/', messagerie.views.chat_view, name='chat_view'),
+    path('chat/messages/<int:discussion_id>/', messagerie.views.get_chat_messages, name='get_chat_messages'),  # ✅ Supprime 'receiver_username'
+    path('messagerie/discussions/', messagerie.views.list_discussions, name='list_discussions'),
     
 ]
 

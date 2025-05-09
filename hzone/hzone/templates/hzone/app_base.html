@@ -16,8 +16,7 @@
             <div class="nav-links">
                 <a href="{% url 'home' %}">Actualités</a>
                 <a href="{% url 'listings' %}">Publier une annonce</a>
-                <a href="{% url 'favoris' %}">Mes favoris</a>
-                <a href="">Notifications</a>
+                <a href="{% url 'list_discussions' %}">Discussions</a>
                 <form method="post" action="{% url 'logout' %}">
                     {% csrf_token %}
                     {% if request.user.profile_photo %}

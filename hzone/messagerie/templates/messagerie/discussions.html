@@ -1,0 +1,20 @@
+{% extends 'hzone/app_base.html' %}
+{% load static %}
+{% block content %}
+<main class="main-content">
+    <h2>💬 Mes Discussions par Biens</h2>
+    <ul class="discussion-list">
+        {% for discussion in discussions %}
+            <li>
+                <a href="{% url 'chat_view' discussion.listing.id discussion.client.username %}">
+                    <img src="{{ discussion.listing.images.first.image.url|default:'https://via.placeholder.com/150' }}" alt="{{ discussion.listing.title }}">
+                    <span>{{ discussion.listing.title }} - {{ discussion.client.username }}</span>
+                </a>
+            </li>
+        {% empty %}
+            <p>Aucune discussion pour le moment.</p>
+        {% endfor %}
+    </ul>
+</main>
+<script src="{% static 'hzone_app/js/navbar.js' %}"></script>
+{% endblock %}

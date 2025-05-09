@@ -42,7 +42,11 @@
               </div>
               <p class="listing-price">{{ listing.price }} €</p>
               <div class="listing-actions">
-                  <button class="action-button primary-button">Faire une offre</button>
+                <form method="post" action="{% url 'chat_view' listing.id listing.owner.username %}">
+                    {% csrf_token %}
+                    <button type="submit" class="action-button primary-button" style="margin: 0; padding: 10px;">Faire une offre</button>
+                </form>
+                
                   <a href="{% url 'listing_detail' listing.id %}" class="action-button secondary-button"  style="text-align: center;">Details...</a>
               </div>
           </div>
