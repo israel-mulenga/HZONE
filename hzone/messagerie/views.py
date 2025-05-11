@@ -69,6 +69,10 @@ def get_chat_messages(request, discussion_id):
 def list_discussions(request):
     discussions = Discussion.objects.filter(owner=request.user) | Discussion.objects.filter(client=request.user)
 
+    for discussion in discussions:
+        discussion.last_message = discussion.last_message()  # ✅ Ajoute la récupération du dernier message
+
     return render(request, 'messagerie/discussions.html', {
         'discussions': discussions,
     })
+

@@ -8,6 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'hzone_app/css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -15,7 +17,7 @@
             <a href="{% url 'home' %}" class="logo">ImmoConnect</a>
             <div class="nav-links">
                 <a href="{% url 'home' %}">Actualités</a>
-                <a href="{% url 'listings' %}">Publier une annonce</a>
+                <a href="{% url 'listings' %}">Annonces</a>
                 <a href="{% url 'list_discussions' %}">Discussions</a>
                 <form method="post" action="{% url 'logout' %}">
                     {% csrf_token %}

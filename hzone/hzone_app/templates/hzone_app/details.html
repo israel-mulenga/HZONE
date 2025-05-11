@@ -65,7 +65,10 @@
                 </div>
                 
                 <div class="property-actions">
-                    <a href="#" class="btn btn-primary">Faire une offre</a>
+                    <form method="post" action="{% url 'chat_view' listing.id listing.owner.username %}">
+                        {% csrf_token %}
+                        <button type="submit" class="action-button primary-button" style="margin: 0; padding: 10px;">Faire une offre</button>
+                    </form>
                     <button class="btn btn-secondary share-property">
                         <i class="fas fa-share-alt"></i> Partager
                     </button>

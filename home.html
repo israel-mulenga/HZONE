@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annonces | Plateforme Immobilière</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        
+        .property-card {
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        
+        .property-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .property-image-container {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .property-image {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .property-card:hover .property-image {
+            transform: scale(1.03);
+        }
+        
+        .property-type {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .favorite-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #64748b;
+            transition: all 0.2s ease;
+        }
+        
+        .favorite-btn:hover, .favorite-btn.active {
+            color: #ef4444;
+        }
+        
+        .price-tag {
+            font-weight: 700;
+            color: #1e293b;
+        }
+        
+        .filter-btn.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+        
+        .filter-btn.active:hover {
+            background-color: #2563eb;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            min-width: 200px;
+            z-index: 10;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Annonces immobilières</h1>
+                <p class="text-gray-500">Découvrez les dernières propriétés disponibles</p>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                <div class="relative">
+                    <input type="text" placeholder="Rechercher une ville, un quartier..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full">
+                    <i class="fas fa-map-marker-alt absolute left-3 top-3 text-gray-400"></i>
+                </div>
+                <div class="relative dropdown">
+                    <button class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 w-full md:w-auto justify-center">
+                        <i class="fas fa-sliders-h text-gray-500"></i>
+                        <span>Filtres</span>
+                    </button>
+                    <div class="dropdown-content mt-1 bg-white rounded-lg p-4">
+                        <div class="mb-3">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Type de bien</label>
+                            <div class="flex flex-wrap gap-2">
+                                <button class="filter-btn px-3 py-1 text-sm rounded-full bg-gray-100 hover:bg-gray-200">Appartement</button>
+                                <button class="filter-btn px-3 py-1 text-sm rounded-full bg-gray-100 hover:bg-gray-200">Maison</button>
+                                <button class="filter-btn px-3 py-1 text-sm rounded-full bg-gray-100 hover:bg-gray-200">Terrain</button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Budget</label>
+                            <div class="flex items-center gap-2">
+                                <input type="number" placeholder="Min" class="w-1/2 px-3 py-1 border border-gray-300 rounded-lg text-sm">
+                                <span>-</span>
+                                <input type="number" placeholder="Max" class="w-1/2 px-3 py-1 border border-gray-300 rounded-lg text-sm">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Surface</label>
+                            <div class="flex items-center gap-2">
+                                <input type="number" placeholder="Min m²" class="w-1/2 px-3 py-1 border border-gray-300 rounded-lg text-sm">
+                                <span>-</span>
+                                <input type="number" placeholder="Max m²" class="w-1/2 px-3 py-1 border border-gray-300 rounded-lg text-sm">
+                            </div>
+                        </div>
+                        <button class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors">
+                            Appliquer les filtres
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick filters -->
+        <div class="flex flex-wrap gap-2 mb-6">
+            <button class="filter-btn active px-4 py-2 text-sm rounded-lg">Toutes</button>
+            <button class="filter-btn px-4 py-2 text-sm rounded-lg bg-gray-100 hover:bg-gray-200">À louer</button>
+            <button class="filter-btn px-4 py-2 text-sm rounded-lg bg-gray-100 hover:bg-gray-200">À vendre</button>
+            <button class="filter-btn px-4 py-2 text-sm rounded-lg bg-gray-100 hover:bg-gray-200">Nouveautés</button>
+            <button class="filter-btn px-4 py-2 text-sm rounded-lg bg-gray-100 hover:bg-gray-200">Coup de cœur</button>
+        </div>
+        
+        <!-- Properties grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Property Card 1 -->
+            <a href="#" class="property-card bg-white rounded-xl overflow-hidden flex flex-col h-full">
+                <div class="property-image-container">
+                    <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Property" class="property-image">
+                    <span class="property-type bg-blue-500 text-white">Location</span>
+                    <button class="favorite-btn">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <div class="p-4 flex-grow flex flex-col">
+                    <div class="flex justify-between items-start mb-1">
+                        <h3 class="font-bold text-gray-900">Appartement moderne</h3>
+                        <span class="price-tag">1 200€/mois</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3 flex items-center">
+                        <i class="fas fa-map-marker-alt text-gray-400 mr-1"></i>
+                        Paris 15ème
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto pt-2 border-t border-gray-100">
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-ruler-combined text-gray-500 mr-1"></i> 75m²
+                        </span>
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-bed text-gray-500 mr-1"></i> 3 chambres
+                        </span>
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-calendar-alt text-gray-500 mr-1"></i> Disponible maintenant
+                        </span>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- Property Card 2 -->
+            <a href="#" class="property-card bg-white rounded-xl overflow-hidden flex flex-col h-full">
+                <div class="property-image-container">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Property" class="property-image">
+                    <span class="property-type bg-green-600 text-white">Vente</span>
+                    <button class="favorite-btn active">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+                <div class="p-4 flex-grow flex flex-col">
+                    <div class="flex justify-between items-start mb-1">
+                        <h3 class="font-bold text-gray-900">Maison de ville</h3>
+                        <span class="price-tag">450 000€</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3 flex items-center">
+                        <i class="fas fa-map-marker-alt text-gray-400 mr-1"></i>
+                        Lyon, Croix-Rousse
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto pt-2 border-t border-gray-100">
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-ruler-combined text-gray-500 mr-1"></i> 110m²
+                        </span>
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-bed text-gray-500 mr-1"></i> 4 chambres
+                        </span>
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-tree text-gray-500 mr-1"></i> Jardin
+                        </span>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- Property Card 3 -->
+            <a href="#" class="property-card bg-white rounded-xl overflow-hidden flex flex-col h-full">
+                <div class="property-image-container">
+                    <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Property" class="property-image">
+                    <span class="property-type bg-blue-500 text-white">Location</span>
+                    <button class="favorite-btn">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <div class="p-4 flex-grow flex flex-col">
+                    <div class="flex justify-between items-start mb-1">
+                        <h3 class="font-bold text-gray-900">Studio étudiant</h3>
+                        <span class="price-tag">650€/mois</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3 flex items-center">
+                        <i class="fas fa-map-marker-alt text-gray-400 mr-1"></i>
+                        Bordeaux, Centre-ville
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto pt-2 border-t border-gray-100">
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-ruler-combined text-gray-500 mr-1"></i> 25m²
+                        </span>
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-utensils text-gray-500 mr-1"></i> Cuisine équipée
+                        </span>
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-wifi text-gray-500 mr-1"></i> Internet inclus
+                        </span>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- Property Card 4 -->
+            <a href="#" class="property-card bg-white rounded-xl overflow-hidden flex flex-col h-full">
+                <div class="property-image-container">
+                    <img src="https://images.unsplash.com/photo-1512917774080-999b46e81c0d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Property" class="property-image">
+                    <span class="property-type bg-green-600 text-white">Vente</span>
+                    <button class="favorite-btn">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <div class="p-4 flex-grow flex flex-col">
+                    <div class="flex justify-between items-start mb-1">
+                        <h3 class="font-bold text-gray-900">Maison contemporaine</h3>
+                        <span class="price-tag">780 000€</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3 flex items-center">
+                        <i class="fas fa-map-marker-alt text-gray-400 mr-1"></i>
+                        Nice, Mont Boron
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto pt-2 border-t border-gray-100">
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-ruler-combined text-gray-500 mr-1"></i> 140m²
+                        </span>
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-bed text-gray-500 mr-1"></i> 5 chambres
+                        </span>
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-swimming-pool text-gray-500 mr-1"></i> Piscine
+                        </span>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- Property Card 5 -->
+            <a href="#" class="property-card bg-white rounded-xl overflow-hidden flex flex-col h-full">
+                <div class="property-image-container">
+                    <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Property" class="property-image">
+                    <span class="property-type bg-blue-500 text-white">Location</span>
+                    <button class="favorite-btn">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <div class="p-4 flex-grow flex flex-col">
+                    <div class="flex justify-between items-start mb-1">
+                        <h3 class="font-bold text-gray-900">Loft industriel</h3>
+                        <span class="price-tag">1 800€/mois</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3 flex items-center">
+                        <i class="fas fa-map-marker-alt text-gray-400 mr-1"></i>
+                        Lille, Vieux-Lille
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto pt-2 border-t border-gray-100">
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-ruler-combined text-gray-500 mr-1"></i> 95m²
+                        </span>
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-bed text-gray-500 mr-1"></i> 2 chambres
+                        </span>
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-parking text-gray-500 mr-1"></i> Parking
+                        </span>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- Property Card 6 -->
+            <a href="#" class="property-card bg-white rounded-xl overflow-hidden flex flex-col h-full">
+                <div class="property-image-container">
+                    <img src="https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Property" class="property-image">
+                    <span class="property-type bg-green-600 text-white">Vente</span>
+                    <button class="favorite-btn active">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+                <div class="p-4 flex-grow flex flex-col">
+                    <div class="flex justify-between items-start mb-1">
+                        <h3 class="font-bold text-gray-900">Chalet montagnard</h3>
+                        <span class="price-tag">320 000€</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3 flex items-center">
+                        <i class="fas fa-map-marker-alt text-gray-400 mr-1"></i>
+                        Chamonix-Mont-Blanc
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto pt-2 border-t border-gray-100">
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-ruler-combined text-gray-500 mr-1"></i> 85m²
+                        </span>
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-fireplace text-gray-500 mr-1"></i> Cheminée
+                        </span>
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-skiing text-gray-500 mr-1"></i> Proche pistes
+                        </span>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- Property Card 7 -->
+            <a href="#" class="property-card bg-white rounded-xl overflow-hidden flex flex-col h-full">
+                <div class="property-image-container">
+                    <img src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Property" class="property-image">
+                    <span class="property-type bg-blue-500 text-white">Location</span>
+                    <button class="favorite-btn">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <div class="p-4 flex-grow flex flex-col">
+                    <div class="flex justify-between items-start mb-1">
+                        <h3 class="font-bold text-gray-900">Duplex lumineux</h3>
+                        <span class="price-tag">1 500€/mois</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3 flex items-center">
+                        <i class="fas fa-map-marker-alt text-gray-400 mr-1"></i>
+                        Marseille, Vieux-Port
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto pt-2 border-t border-gray-100">
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-ruler-combined text-gray-500 mr-1"></i> 65m²
+                        </span>
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-bed text-gray-500 mr-1"></i> 2 chambres
+                        </span>
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-umbrella-beach text-gray-500 mr-1"></i> Vue mer
+                        </span>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- Property Card 8 -->
+            <a href="#" class="property-card bg-white rounded-xl overflow-hidden flex flex-col h-full">
+                <div class="property-image-container">
+                    <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Property" class="property-image">
+                    <span class="property-type bg-green-600 text-white">Vente</span>
+                    <button class="favorite-btn">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <div class="p-4 flex-grow flex flex-col">
+                    <div class="flex justify-between items-start mb-1">
+                        <h3 class="font-bold text-gray-900">Villa de prestige</h3>
+                        <span class="price-tag">1 250 000€</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3 flex items-center">
+                        <i class="fas fa-map-marker-alt text-gray-400 mr-1"></i>
+                        Saint-Tropez
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-auto pt-2 border-t border-gray-100">
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-ruler-combined text-gray-500 mr-1"></i> 220m²
+                        </span>
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-bed text-gray-500 mr-1"></i> 5 chambres
+                        </span>
+                        <span class="text-xs bg-gray-100 px-2 py-1 rounded flex items-center">
+                            <i class="fas fa-water text-gray-500 mr-1"></i> Piscine + Jacuzzi
+                        </span>
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+        <!-- Pagination -->
+        <div class="flex justify-center mt-8">
+            <nav class="flex items-center gap-1">
+                <button class="px-3 py-1 rounded-lg text-gray-500 hover:bg-gray-100">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="px-3 py-1 rounded-lg bg-blue-500 text-white font-medium">1</button>
+                <button class="px-3 py-1 rounded-lg text-gray-700 hover:bg-gray-100">2</button>
+                <button class="px-3 py-1 rounded-lg text-gray-700 hover:bg-gray-100">3</button>
+                <span class="px-3 py-1 text-gray-500">...</span>
+                <button class="px-3 py-1 rounded-lg text-gray-700 hover:bg-gray-100">8</button>
+                <button class="px-3 py-1 rounded-lg text-gray-500 hover:bg-gray-100">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </nav>
+        </div>
+        
+        <!-- Empty state (hidden by default) -->
+        <div class="hidden flex-col items-center justify-center py-12 text-center">
+            <div class="bg-gray-100 p-6 rounded-full mb-4">
+                <i class="fas fa-home text-gray-400 text-4xl"></i>
+            </div>
+            <h3 class="text-lg font-medium text-gray-900 mb-2">Aucune annonce trouvée</h3>
+            <p class="text-gray-500 max-w-md">Aucune propriété ne correspond à vos critères de recherche. Essayez de modifier vos filtres.</p>
+            <button class="mt-4 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium">
+                Réinitialiser les filtres
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Toggle favorite buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const favoriteBtns = document.querySelectorAll('.favorite-btn');
+            
+            favoriteBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.classList.toggle('active');
+                    
+                    const icon = this.querySelector('i');
+                    if (this.classList.contains('active')) {
+                        icon.classList.remove('far');
+                        icon.classList.add('fas');
+                    } else {
+                        icon.classList.remove('fas');
+                        icon.classList.add('far');
+                    }
+                });
+            });
+            
+            // Filter buttons interaction
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (this.classList.contains('active')) return;
+                    
+                    // Remove active class from all buttons
+                    filterBtns.forEach(b => b.classList.remove('active', 'bg-blue-500', 'text-white'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    if (!this.classList.contains('bg-gray-100')) {
+                        this.classList.add('bg-blue-500', 'text-white');
+                    }
+                });
+            });
+            
+            // Property card click handler
+            const propertyCards = document.querySelectorAll('.property-card');
+            propertyCards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (e.target.closest('.favorite-btn')) return;
+                    console.log('Navigating to property details...');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

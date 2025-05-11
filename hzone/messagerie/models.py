@@ -8,6 +8,9 @@ class Discussion(models.Model):
     client = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="client_discussions")  # ✅ Client qui initie la discussion
     created_at = models.DateTimeField(auto_now_add=True)  # ✅ Date de création
 
+    def last_message(self):
+        return self.messages.order_by("-timestamp").first()  # ✅ Dernier message de la discussion
+
     def __str__(self):
         return f"Discussion sur {self.listing.title} entre {self.owner.username} et {self.client.username}"
 
