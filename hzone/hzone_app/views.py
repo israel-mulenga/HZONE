@@ -5,8 +5,8 @@ from django.contrib.auth import logout
 
 @login_required(login_url="connexion")
 def home(request):
-    listings = Listing.objects.all()
-    return render(request, 'hzone_app/home.html', context={'listings' : listings})
+    listings = Listing.objects.exclude(owner=request.user)
+    return render(request, 'hzone_app/home.html', context={'listings': listings})
 
 @login_required
 def favoris(request):
