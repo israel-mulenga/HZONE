@@ -1,3 +1,5 @@
 mon_env/
 election/
 test/
+hzone/staticfiles/
+hzone/media/
