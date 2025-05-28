@@ -146,7 +146,7 @@ STATIC_URL = '/static/'  # ✅ Corrige la faute de frappe !
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),  # ✅ Assure-toi que ce dossier existe !
 ]
-#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # ✅ Dossier où seront copiés les fichiers
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # ✅ Dossier où seront copiés les fichiers
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'  # ✅ Correction du nom !
 
