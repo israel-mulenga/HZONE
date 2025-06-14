@@ -40,13 +40,6 @@ HZone is a web application developed with Django, featuring user authentication,
     ```
 2.  Open your web browser and navigate to `http://127.0.0.1:8000/`.
 
-## Running Tests
-
-To run the test suite:
-```bash
-python manage.py test
-```
-(Note: Currently, the project has 0 tests. This section is a placeholder for when tests are added.)
 
 ## Project Structure Overview
 
